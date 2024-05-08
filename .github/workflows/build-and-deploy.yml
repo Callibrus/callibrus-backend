@@ -26,7 +26,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: andrewpopesku/callibrus-backend:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
 
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
@@ -38,5 +38,5 @@ jobs:
           cd ../home/callibrus
           docker stop callibrus-backend || true
           docker rm callibrus-backend || true
-          docker pull andrewpopesku/callibrus-backend:latest
-          docker run -d -p 8080:8080 --name callibrus-backend andrewpopesku/callibrus-backend:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
+          docker run -d -p 8080:8080 --name callibrus-backend ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
