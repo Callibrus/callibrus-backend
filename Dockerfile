@@ -6,10 +6,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["callibrus.server/callibrus.server.csproj", "callibrus.server/"]
-RUN dotnet restore "callibrus.server/callibrus.server.csproj"
+COPY ["./callibrus.server.csproj", "./"]
+RUN dotnet restore "callibrus.server.csproj"
 COPY . .
-WORKDIR "/src/callibrus.server"
+WORKDIR "/src"
 RUN dotnet build "callibrus.server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

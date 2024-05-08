@@ -3,7 +3,7 @@
     image: callibrus.server
     build:
       context: .
-      target: .
+      dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
