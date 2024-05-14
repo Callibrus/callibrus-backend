@@ -8,6 +8,7 @@ public class Author
     public string Patronymic { get; set; }
     public string Nickname { get; set; }
     public DateTime BirthDate { get; set; }
+    public string Biography { get; set; }
     
     public ICollection<Book> Books { get; set; }
 }
