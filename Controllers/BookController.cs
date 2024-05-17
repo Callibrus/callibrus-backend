@@ -37,6 +37,26 @@ public class BookController : ControllerBase
         return Ok(book);
     }
     
+    [HttpPost("book")]
+    public async Task<IActionResult> AddBook([FromBody] Book? newBook)
+    {
+        if (newBook == null)
+        {
+            return BadRequest("Book is null.");
+        }
+
+        try
+        {
+            await _libraryDbContext.Books.AddAsync(newBook);
+            await _libraryDbContext.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetBookById), new { id = newBook.Id }, newBook);
+        }
+        catch (DbUpdateException ex)
+        {
+            return StatusCode(500, "Unable to save changes: " + ex.Message);
+        }
+    }
+    
     [HttpPut("book/{id}")]
     public async Task<IActionResult> UpdateBook(int id, [FromBody] Book bookFromBody)
     {
