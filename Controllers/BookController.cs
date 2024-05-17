@@ -37,7 +37,7 @@ public class BookController : ControllerBase
         return Ok(book);
     }
     
-    [HttpPost("book")]
+    [HttpPost("book/create")]
     public async Task<IActionResult> AddBook([FromBody] Book? newBook)
     {
         if (newBook == null)
@@ -57,7 +57,7 @@ public class BookController : ControllerBase
         }
     }
     
-    [HttpPut("book/{id}")]
+    [HttpPut("book/update/{id}")]
     public async Task<IActionResult> UpdateBook(int id, [FromBody] Book bookFromBody)
     {
         var book = await _libraryDbContext.Books
@@ -80,7 +80,7 @@ public class BookController : ControllerBase
         }
     }
     
-    [HttpDelete("book/{id}")]
+    [HttpDelete("book/delete/{id}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
         var book = await _libraryDbContext.Books.FindAsync(id);

@@ -37,7 +37,7 @@ public class AuthorController : ControllerBase
         return Ok(author);
     }
     
-    [HttpPost("book")]
+    [HttpPost("author/create")]
     public async Task<IActionResult> AddAuthor([FromBody] Author? newAuthor)
     {
         if (newAuthor == null)
@@ -57,7 +57,7 @@ public class AuthorController : ControllerBase
         }
     }
     
-    [HttpPut("author/{id}")]
+    [HttpPut("author/update/{id}")]
     public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Author authorFromBody)
     {
         var author = await _libraryDbContext.Authors
@@ -80,7 +80,7 @@ public class AuthorController : ControllerBase
         }
     }
     
-    [HttpDelete("author/{id}")]
+    [HttpDelete("author/delete/{id}")]
     public async Task<IActionResult> DeleteAuthor(int id)
     {
         var author = await _libraryDbContext.Authors.FindAsync(id);
