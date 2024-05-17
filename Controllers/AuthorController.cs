@@ -37,6 +37,26 @@ public class AuthorController : ControllerBase
         return Ok(author);
     }
     
+    [HttpPost("book")]
+    public async Task<IActionResult> AddAuthor([FromBody] Author? newAuthor)
+    {
+        if (newAuthor == null)
+        {
+            return BadRequest("Author is null.");
+        }
+
+        try
+        {
+            await _libraryDbContext.Authors.AddAsync(newAuthor);
+            await _libraryDbContext.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAuthorById), new { id = newAuthor.Id }, newAuthor);
+        }
+        catch (DbUpdateException ex)
+        {
+            return StatusCode(500, "Unable to save changes: " + ex.Message);
+        }
+    }
+    
     [HttpPut("author/{id}")]
     public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Author authorFromBody)
     {
