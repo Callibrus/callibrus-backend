@@ -29,7 +29,7 @@ public class BookController : ControllerBase
                 AvailableCopies = b.AvailableCopies,
                 Genre = b.Genre,
                 ImageUrl = b.ImageUrl,
-                Authors = b.Authors.Select(Extensions.ToAuthorForBody)
+                Authors = b.Authors.Select(b => b.ToAuthorForBody())
             });
         return Ok(await books.ToListAsync());
     }
@@ -52,7 +52,7 @@ public class BookController : ControllerBase
             AvailableCopies = book.AvailableCopies,
             Genre = book.Genre,
             ImageUrl = book.ImageUrl,
-            Authors = book.Authors.Select(Extensions.ToAuthorForBody)
+            Authors = book.Authors.Select(b => b.ToAuthorForBody())
         });
     }
     

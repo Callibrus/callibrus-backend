@@ -28,7 +28,7 @@ public class AuthorController : ControllerBase
                 DeathDate = a.DeathDate,
                 Biography = a.Biography,
                 ImageUrl = a.ImageUrl,
-                Books = a.Books.Select(Extensions.ToBookForBody)
+                Books = a.Books.Select(a => a.ToBookForBody())
             });
         return Ok(await authors.ToListAsync());
     }
@@ -50,7 +50,7 @@ public class AuthorController : ControllerBase
             DeathDate = author.DeathDate,
             Biography = author.Biography,
             ImageUrl = author.ImageUrl,
-            Books = author.Books.Select(Extensions.ToBookForBody)
+            Books = author.Books.Select(a => a.ToBookForBody())
         });
     }
     
