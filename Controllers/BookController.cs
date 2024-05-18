@@ -20,7 +20,17 @@ public class BookController : ControllerBase
     public async Task<IActionResult> GetBooks()
     {
         var books = _libraryDbContext.Books
-            .Include(b => b.Authors);
+            .Include(b => b.Authors)
+            .Select(b => new
+            {
+                Title = b.Title,
+                Description = b.Description,
+                DatePublished = b.DatePublished,
+                AvailableCopies = b.AvailableCopies,
+                Genre = b.Genre,
+                ImageUrl = b.ImageUrl,
+                Authors = b.Authors.Select(Extensions.ToAuthorForBody)
+            });
         return Ok(await books.ToListAsync());
     }
     
@@ -34,7 +44,16 @@ public class BookController : ControllerBase
         if (book == null)
             return NotFound();
         
-        return Ok(book);
+        return Ok(new
+        {
+            Title = book.Title,
+            Description = book.Description,
+            DatePublished = book.DatePublished,
+            AvailableCopies = book.AvailableCopies,
+            Genre = book.Genre,
+            ImageUrl = book.ImageUrl,
+            Authors = book.Authors.Select(Extensions.ToAuthorForBody)
+        });
     }
     
     [HttpPost("book/create")]

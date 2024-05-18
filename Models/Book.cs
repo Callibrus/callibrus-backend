@@ -10,5 +10,5 @@ public class Book
     public string Genre { get; set; }
     public string? ImageUrl { get; set; }
     
-    public ICollection<Author>? Authors { get; set; }
+    public ICollection<Author> Authors { get; set; }
 }

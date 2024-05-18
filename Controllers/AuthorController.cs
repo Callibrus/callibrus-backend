@@ -20,7 +20,16 @@ public class AuthorController : ControllerBase
     public async Task<IActionResult> GetAuthors()
     {
         var authors = _libraryDbContext.Authors
-            .Include(b => b.Books);
+            .Include(b => b.Books)
+            .Select(a => new
+            {
+                FullName = a.FullName,
+                BirthDate = a.BirthDate,
+                DeathDate = a.DeathDate,
+                Biography = a.Biography,
+                ImageUrl = a.ImageUrl,
+                Books = a.Books.Select(Extensions.ToBookForBody)
+            });
         return Ok(await authors.ToListAsync());
     }
     
@@ -34,7 +43,15 @@ public class AuthorController : ControllerBase
         if (author == null)
             return NotFound();
         
-        return Ok(author);
+        return Ok(new
+        {
+            FullName = author.FullName,
+            BirthDate = author.BirthDate,
+            DeathDate = author.DeathDate,
+            Biography = author.Biography,
+            ImageUrl = author.ImageUrl,
+            Books = author.Books.Select(Extensions.ToBookForBody)
+        });
     }
     
     [HttpPost("author/create")]

@@ -11,5 +11,5 @@ public class Author
     public string Biography { get; set; }
     public string? ImageUrl { get; set; }
     
-    public ICollection<Book>? Books { get; set; }
+    public ICollection<Book> Books { get; set; }
 }

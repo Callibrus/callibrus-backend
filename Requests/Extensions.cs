@@ -40,4 +40,43 @@ public static class Extensions
             BookId = createBookingRequest.BookId
         };
     }
+    
+    public static CreateBookRequest ToBookForBody(this Book book)
+    {
+        return new CreateBookRequest()
+        {
+            Id = book.Id,
+            Title = book.Title,
+            Description = book.Description,
+            DatePublished = book.DatePublished,
+            AvailableCopies = book.AvailableCopies,
+            Genre = book.Genre,
+            ImageUrl = book.ImageUrl
+        };
+    }
+
+    public static CreateAuthorRequest ToAuthorForBody(this Author author)
+    {
+        return new CreateAuthorRequest()
+        {
+            Id = author.Id,
+            FullName = author.FullName,
+            BirthDate = author.BirthDate,
+            DeathDate = author.DeathDate,
+            Biography = author.Biography,
+            ImageUrl = author.ImageUrl
+        };
+    }
+
+    public static CreateBookingRequest ToBookingForBody(this Booking booking)
+    {
+        return new CreateBookingRequest()
+        {
+            Id = booking.Id,
+            StartTime = booking.StartTime,
+            EndTime = booking.EndTime,
+            UserName = booking.UserName,
+            BookId = booking.BookId
+        };
+    }
 }
