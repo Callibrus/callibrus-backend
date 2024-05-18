@@ -38,18 +38,18 @@ public class BookController : ControllerBase
     }
     
     [HttpPost("book/create")]
-    public async Task<IActionResult> AddBook([FromBody] Book? newBook)
+    public async Task<IActionResult> CreateBook([FromBody] CreateBookRequest? newBookRequest)
     {
-        if (newBook == null)
+        if (newBookRequest == null)
         {
             return BadRequest("Book is null.");
         }
 
         try
         {
-            await _libraryDbContext.Books.AddAsync(newBook);
+            await _libraryDbContext.Books.AddAsync(newBookRequest.ToBook());
             await _libraryDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetBookById), new { id = newBook.Id }, newBook);
+            return CreatedAtAction(nameof(GetBookById), new { id = newBookRequest.Id }, newBookRequest);
         }
         catch (DbUpdateException ex)
         {

@@ -38,18 +38,18 @@ public class AuthorController : ControllerBase
     }
     
     [HttpPost("author/create")]
-    public async Task<IActionResult> AddAuthor([FromBody] Author? newAuthor)
+    public async Task<IActionResult> CreateAuthor([FromBody] CreateAuthorRequest? newAuthorRequest)
     {
-        if (newAuthor == null)
+        if (newAuthorRequest == null)
         {
             return BadRequest("Author is null.");
         }
 
         try
         {
-            await _libraryDbContext.Authors.AddAsync(newAuthor);
+            await _libraryDbContext.Authors.AddAsync(newAuthorRequest.ToAuthor());
             await _libraryDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAuthorById), new { id = newAuthor.Id }, newAuthor);
+            return CreatedAtAction(nameof(GetAuthorById), new { id = newAuthorRequest.Id }, newAuthorRequest);
         }
         catch (DbUpdateException ex)
         {

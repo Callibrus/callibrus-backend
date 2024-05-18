@@ -36,18 +36,18 @@ public class BookingController : ControllerBase
     }
     
     [HttpPost("booking/create")]
-    public async Task<IActionResult> AddBooking([FromBody] Booking? newBooking)
+    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest? newBookingRequest)
     {
-        if (newBooking == null)
+        if (newBookingRequest == null)
         {
             return BadRequest("Booking is null.");
         }
 
         try
         {
-            await _libraryDbContext.Bookings.AddAsync(newBooking);
+            await _libraryDbContext.Bookings.AddAsync(newBookingRequest.ToBooking());
             await _libraryDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetBookingById), new { id = newBooking.Id }, newBooking);
+            return CreatedAtAction(nameof(GetBookingById), new { id = newBookingRequest.Id }, newBookingRequest);
         }
         catch (DbUpdateException ex)
         {
