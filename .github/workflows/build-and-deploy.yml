@@ -39,4 +39,4 @@ jobs:
           docker stop callibrus-backend || true
           docker rm callibrus-backend || true
           docker pull ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
-          docker run -d -p 8080:8080 --name callibrus-backend ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
+          docker run -d -p 8080:8080 --name callibrus-backend -e ASPNETCORE_ENVIRONMENT=Development ${{ secrets.DOCKER_USERNAME }}/callibrus-backend:latest
