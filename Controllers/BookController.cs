@@ -58,7 +58,7 @@ public class BookController : ControllerBase
     }
     
     [HttpPut("book/update/{id}")]
-    public async Task<IActionResult> UpdateBook(int id, [FromBody] Book bookFromBody)
+    public async Task<IActionResult> UpdateBook(int id, [FromBody] CreateBookRequest bookFromBody)
     {
         var book = await _libraryDbContext.Books
             .Include(b => b.Authors)
@@ -67,7 +67,10 @@ public class BookController : ControllerBase
         {
             return NotFound($"Book with ID {id} not found.");
         }
-
+            
+        book = bookFromBody.ToBook();
+        book.Id = id;
+        
         try
         {
             _libraryDbContext.Books.Update(book);
