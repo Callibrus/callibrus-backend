@@ -23,6 +23,14 @@ public class BookingController : ControllerBase
         return Ok(bookings);
     }
     
+    [HttpGet("bookings/bookId={bookId}")]
+    public async Task<IActionResult> GetBookingsByBookId(int bookId)
+    {
+        var bookings = _libraryDbContext.Bookings
+            .Where(b => b.BookId == bookId);
+        return Ok(bookings);
+    }
+    
     [HttpGet("booking/{id}")]
     public async Task<IActionResult> GetBookingById(int id)
     {
