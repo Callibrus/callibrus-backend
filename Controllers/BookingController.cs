@@ -28,6 +28,10 @@ public class BookingController : ControllerBase
     {
         var booking = _libraryDbContext.Bookings
             .FirstOrDefaultAsync(b => b.Id == id);
+        
+        if (booking == null)
+            return NotFound();
+        
         return Ok(booking);
     }
     
