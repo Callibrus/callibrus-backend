@@ -22,7 +22,14 @@ public class BookingController : ControllerBase
     public async Task<IActionResult> GetBookings()
     {
         var bookings = _libraryDbContext.Bookings;
-        return Ok(await bookings.ToListAsync());
+        return Ok(bookings.Select(b => new
+        {
+            b.Id,
+            b.BookId,
+            b.StartTime,
+            b.EndTime,
+            b.UserName,
+        }));
     }
 
     [HttpGet("bookings/bookId={bookId}")]
@@ -30,7 +37,14 @@ public class BookingController : ControllerBase
     {
         var bookings = _libraryDbContext.Bookings
             .Where(b => b.BookId == bookId);
-        return Ok(await bookings.ToListAsync());
+        return Ok(bookings.Select(b => new
+        {
+            b.Id,
+            b.BookId,
+            b.StartTime,
+            b.EndTime,
+            b.UserName,
+        }));
     }
 
     [HttpGet("booking/{id}")]
@@ -42,7 +56,14 @@ public class BookingController : ControllerBase
         if (booking == null)
             return NotFound();
 
-        return Ok(booking);
+        return Ok(new
+        {
+            booking.Id,
+            booking.BookId,
+            booking.StartTime,
+            booking.EndTime,
+            booking.UserName,
+        });
     }
 
     [EnableCors("_myAllowSpecificOrigins")]
