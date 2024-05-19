@@ -57,7 +57,10 @@ public class BookingController : ControllerBase
         {
             await _libraryDbContext.Bookings.AddAsync(newBookingRequest.ToBooking());
             await _libraryDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetBookingById), new { id = newBookingRequest.Id }, newBookingRequest);
+
+            var book = _libraryDbContext.Bookings
+                .FirstOrDefaultAsync(b => b.BookId == newBookingRequest.BookId && b.UserName == newBookingRequest.UserName);
+            return CreatedAtAction(nameof(GetBookingById), new { id = book.Id }, book);
         }
         catch (DbUpdateException ex)
         {
