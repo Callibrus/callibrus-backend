@@ -1,5 +1,6 @@
 using Callibrus.Server.Data;
 using Callibrus.Server.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace Callibrus.Server.Controllers;
 
 [Route("api")]
 [ApiController]
+[EnableCors("_myAllowSpecificOrigins")]
 public class BookingController : ControllerBase
 {
     private readonly LibraryDbContext _libraryDbContext;
@@ -19,8 +21,8 @@ public class BookingController : ControllerBase
     [HttpGet("bookings")]
     public async Task<IActionResult> GetBookings()
     {
-        var bookings = _libraryDbContext.Bookings;
-        return Ok(bookings);
+        var bookings =  _libraryDbContext.Bookings;
+        return Ok(await bookings.ToListAsync());
     }
     
     [HttpGet("bookings/bookId={bookId}")]
@@ -28,13 +30,13 @@ public class BookingController : ControllerBase
     {
         var bookings = _libraryDbContext.Bookings
             .Where(b => b.BookId == bookId);
-        return Ok(bookings);
+        return Ok(await bookings.ToListAsync());
     }
     
     [HttpGet("booking/{id}")]
     public async Task<IActionResult> GetBookingById(int id)
     {
-        var booking = _libraryDbContext.Bookings
+        var booking = await _libraryDbContext.Bookings
             .FirstOrDefaultAsync(b => b.Id == id);
         
         if (booking == null)
