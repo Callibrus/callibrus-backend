@@ -82,4 +82,13 @@ public class BookingController : ControllerBase
     
         return NoContent();
     }
+    
+    [HttpOptions("booking/create")]
+    public IActionResult Options()
+    {
+        Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        Response.Headers.Add("Access-Control-Allow-Methods", "POST, OPTIONS");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+        return Ok();
+    }
 }
