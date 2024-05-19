@@ -1,5 +1,6 @@
 using Callibrus.Server.Data;
 using Callibrus.Server.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace Callibrus.Server.Controllers;
 
 [Route("api")]
 [ApiController]
+[EnableCors("_myAllowSpecificOrigins")]
 public class BookingController : ControllerBase
 {
     private readonly LibraryDbContext _libraryDbContext;
