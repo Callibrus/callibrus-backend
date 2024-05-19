@@ -1,5 +1,6 @@
 using Callibrus.Server.Data;
 using Callibrus.Server.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace Callibrus.Server.Controllers;
 
 [Route("api")]
 [ApiController]
+[EnableCors("_myAllowSpecificOrigins")]
 public class BookController : ControllerBase
 {
     private readonly LibraryDbContext _libraryDbContext;
@@ -58,6 +60,7 @@ public class BookController : ControllerBase
         });
     }
     
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("book/create")]
     public async Task<IActionResult> CreateBook([FromBody] CreateBookRequest? newBookRequest)
     {
@@ -78,6 +81,7 @@ public class BookController : ControllerBase
         }
     }
     
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPut("book/update/{id}")]
     public async Task<IActionResult> UpdateBook(int id, [FromBody] CreateBookRequest bookFromBody)
     {
@@ -104,6 +108,7 @@ public class BookController : ControllerBase
         }
     }
     
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpDelete("book/delete/{id}")]
     public async Task<IActionResult> DeleteBook(int id)
     {

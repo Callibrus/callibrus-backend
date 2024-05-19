@@ -82,6 +82,7 @@ public class BookingController : ControllerBase
         }
     }
 
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpDelete("booking/delete/{id}")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
