@@ -23,6 +23,7 @@ public class AuthorController : ControllerBase
             .Include(b => b.Books)
             .Select(a => new
             {
+                Id = a.Id,
                 FullName = a.FullName,
                 BirthDate = a.BirthDate,
                 DeathDate = a.DeathDate,
@@ -45,6 +46,7 @@ public class AuthorController : ControllerBase
         
         return Ok(new
         {
+            Id = author.Id,
             FullName = author.FullName,
             BirthDate = author.BirthDate,
             DeathDate = author.DeathDate,
