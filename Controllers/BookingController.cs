@@ -54,15 +54,23 @@ public class BookingController : ControllerBase
             return BadRequest("Booking is null.");
         }
 
+        var book = await _libraryDbContext.Books
+            .FirstOrDefaultAsync(b => b.Id == newBookingRequest.BookId);
+
+        if (book == null)
+        {
+            return BadRequest("Book does not exist to be booked");
+        }
+
         try
         {
             var newBooking = newBookingRequest.ToBooking();
             await _libraryDbContext.Bookings.AddAsync(newBooking);
             await _libraryDbContext.SaveChangesAsync();
 
-            var book = await _libraryDbContext.Bookings
+            var booking = await _libraryDbContext.Bookings
                 .FirstOrDefaultAsync(b => b.BookId == newBookingRequest.BookId && b.UserName == newBookingRequest.UserName);
-            return CreatedAtAction(nameof(GetBookingById), new { id = book.Id }, book);
+            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, booking);
         }
         catch (DbUpdateException ex)
         {
