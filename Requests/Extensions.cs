@@ -33,7 +33,6 @@ public static class Extensions
     {
         return new Booking()
         {
-            Id = createBookingRequest.Id,
             StartTime = createBookingRequest.StartTime,
             EndTime = createBookingRequest.EndTime,
             UserName = createBookingRequest.UserName,
@@ -72,7 +71,6 @@ public static class Extensions
     {
         return new CreateBookingRequest()
         {
-            Id = booking.Id,
             StartTime = booking.StartTime,
             EndTime = booking.EndTime,
             UserName = booking.UserName,

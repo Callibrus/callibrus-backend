@@ -21,10 +21,10 @@ public class BookingController : ControllerBase
     [HttpGet("bookings")]
     public async Task<IActionResult> GetBookings()
     {
-        var bookings =  _libraryDbContext.Bookings;
+        var bookings = _libraryDbContext.Bookings;
         return Ok(await bookings.ToListAsync());
     }
-    
+
     [HttpGet("bookings/bookId={bookId}")]
     public async Task<IActionResult> GetBookingsByBookId(int bookId)
     {
@@ -32,19 +32,20 @@ public class BookingController : ControllerBase
             .Where(b => b.BookId == bookId);
         return Ok(await bookings.ToListAsync());
     }
-    
+
     [HttpGet("booking/{id}")]
     public async Task<IActionResult> GetBookingById(int id)
     {
         var booking = await _libraryDbContext.Bookings
             .FirstOrDefaultAsync(b => b.Id == id);
-        
+
         if (booking == null)
             return NotFound();
-        
+
         return Ok(booking);
     }
-    
+
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("booking/create")]
     public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest? newBookingRequest)
     {
@@ -55,10 +56,11 @@ public class BookingController : ControllerBase
 
         try
         {
-            await _libraryDbContext.Bookings.AddAsync(newBookingRequest.ToBooking());
+            var newBooking = newBookingRequest.ToBooking();
+            await _libraryDbContext.Bookings.AddAsync(newBooking);
             await _libraryDbContext.SaveChangesAsync();
 
-            var book = _libraryDbContext.Bookings
+            var book = await _libraryDbContext.Bookings
                 .FirstOrDefaultAsync(b => b.BookId == newBookingRequest.BookId && b.UserName == newBookingRequest.UserName);
             return CreatedAtAction(nameof(GetBookingById), new { id = book.Id }, book);
         }
@@ -67,7 +69,7 @@ public class BookingController : ControllerBase
             return StatusCode(500, "Unable to save changes: " + ex.Message);
         }
     }
-    
+
     [HttpDelete("booking/delete/{id}")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
@@ -76,19 +78,10 @@ public class BookingController : ControllerBase
         {
             return NotFound("Booking not found");
         }
-    
+
         _libraryDbContext.Bookings.Remove(booking);
         await _libraryDbContext.SaveChangesAsync();
-    
+
         return NoContent();
-    }
-    
-    [HttpOptions("booking/create")]
-    public IActionResult Options()
-    {
-        Response.Headers.Add("Access-Control-Allow-Origin", "*");
-        Response.Headers.Add("Access-Control-Allow-Methods", "POST, OPTIONS");
-        Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
-        return Ok();
     }
 }

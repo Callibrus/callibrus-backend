@@ -1,11 +1,12 @@
 using Callibrus.Server.Data;
 using Microsoft.EntityFrameworkCore;
 
+var  myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
+    options.AddPolicy(name: myAllowSpecificOrigins,
         builder =>
         {
             builder.AllowAnyOrigin() // Allows any origin
@@ -35,7 +36,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseAuthorization();
 
