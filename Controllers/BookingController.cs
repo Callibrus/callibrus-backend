@@ -59,7 +59,11 @@ public class BookingController : ControllerBase
 
         if (book == null)
         {
-            return BadRequest("Book does not exist to be booked");
+            return BadRequest(new
+            {
+                status = 400, 
+                message = "Book does not exists to be booked"
+            });
         }
 
         try
