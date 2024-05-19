@@ -9,10 +9,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: myAllowSpecificOrigins,
         builder =>
         {
-            builder.AllowAnyOrigin() // Allows any origin
+            builder.SetIsOriginAllowed(origin => true) // Allows any origin
                 .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
+                .AllowAnyMethod();
         });
 });
 
